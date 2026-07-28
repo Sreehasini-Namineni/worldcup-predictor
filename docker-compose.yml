@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: wc_user
+      POSTGRES_PASSWORD: wc_password
+      POSTGRES_DB: worldcup
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wc_user -d worldcup"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql://wc_user:wc_password@db:5432/worldcup
+      DATA_DIR: /app/data
+    volumes:
+      - ./backend/data:/app/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+        if [ ! -f data/raw_matches.csv ]; then python -m app.generate_sample_data; fi &&
+        if [ ! -f data/model/params.msgpack ]; then python -m app.train; python -m app.calibrate; fi &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000
+      "
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+    ports:
+      - "5173:4173"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

@@ -1,0 +1,164 @@
+/* ---------------------------------------------------------------
+   Design tokens — "Match Day" theme
+
+   Grounded in a floodlit night pitch: deep turf green background
+   with mown-stripe texture, chalk-white touchline text, and a
+   single trophy-gold accent reserved for the model's live call.
+   Scoreboard digits use a heavy grotesque; body copy uses a
+   geometric sans; raw stats/odds use a mono face, like a stadium
+   clock or a betting board.
+------------------------------------------------------------------ */
+
+:root {
+  --pitch-night: #0a1f1a;
+  --pitch-mid: #0f2b23;
+  --touchline: #16362c;
+  --touchline-light: #1e4536;
+  --chalk: #f2f0e4;
+  --chalk-dim: #b9c4bc;
+  --gold: #e3b341;
+  --gold-dim: #a9832f;
+  --win-a: #4fb3a9;
+  --draw: #c9c2a8;
+  --win-b: #e0895a;
+  --danger: #e0654f;
+
+  --font-display: "Archivo Black", "Arial Black", sans-serif;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
+
+  --radius: 4px;
+  --border: 1px solid rgba(242, 240, 228, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--pitch-night);
+  background-image:
+    repeating-linear-gradient(
+      120deg,
+      rgba(242, 240, 228, 0.015) 0px,
+      rgba(242, 240, 228, 0.015) 60px,
+      transparent 60px,
+      transparent 120px
+    );
+  color: var(--chalk);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--pitch-night);
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: var(--gold);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+}
+
+.card {
+  background: var(--touchline);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  color: var(--chalk);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+select, input[type="text"] {
+  background: var(--pitch-mid);
+  border: var(--border);
+  color: var(--chalk);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius);
+  outline: none;
+}
+
+select:focus, input:focus, button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+button.primary {
+  background: var(--gold);
+  color: var(--pitch-night);
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+button.primary:hover {
+  background: #f0c661;
+}
+
+button.primary:active {
+  transform: scale(0.98);
+}
+
+button.primary:disabled {
+  background: var(--gold-dim);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.ghost {
+  background: transparent;
+  border: var(--border);
+  color: var(--chalk);
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+button.ghost:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
